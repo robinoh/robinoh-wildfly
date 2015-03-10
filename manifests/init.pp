@@ -1,13 +1,13 @@
 # rji-wildfly
 # The rji-wildfly Puppet module manages the installation, configuration, and
-# application deployments for JBoss Application Server 7.
+# application deployments for WildFly 8.
 #
-#   * Puppet Forge: http://forge.puppetlabs.com/rji/wildfly
-#   * Project page: https://github.com/rji/puppet-wildfly
+#   * Puppet Forge: http://forge.puppetlabs.com/robinoh/wildfly
+#   * Project page: https://github.com/robinoh/robinoh-wildfly
 #
 #
 # Class: wildfly
-# This class is responsible for installing and configuring the JBoss Application
+# This class is responsible for installing and configuring the WildFly Application
 # Server. Application deployments can then be managed using `wildfly::deploy`.
 #
 class wildfly (

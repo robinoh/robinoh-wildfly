@@ -23,6 +23,6 @@ class wildfly::config {
     require => File['/etc/wildfly', '/etc/init.d/wildfly']
   }
 
-  # Add additional JBoss modules (datastore drivers, etc) below.
+  # Add additional WildFly modules (datastore drivers, etc) below.
 
 }

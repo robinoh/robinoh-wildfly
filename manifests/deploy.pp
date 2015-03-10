@@ -1,5 +1,5 @@
 # Definition: wildfly::deploy
-# Deploys a EAR/WAR application archive to a WildFly.
+# Deploys a EAR/WAR application archive to a WildFly application server.
 #
 define wildfly::deploy(
   $pkg         = $title,
