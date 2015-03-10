@@ -1,3 +1,10 @@
+# OS files and editors' temp files
+.DS_Store
+.*
+*.swp
+*~
+Gemfile.lock
+
 *.gem
 *.rbc
 /.config
