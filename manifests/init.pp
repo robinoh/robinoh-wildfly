@@ -1,41 +1,43 @@
-# == Class: wildfly
+# rji-wildfly
+# The rji-wildfly Puppet module manages the installation, configuration, and
+# application deployments for JBoss Application Server 7.
 #
-# Full description of class wildfly here.
+#   * Puppet Forge: http://forge.puppetlabs.com/rji/wildfly
+#   * Project page: https://github.com/rji/puppet-wildfly
 #
-# === Parameters
 #
-# Document parameters here.
+# Class: wildfly
+# This class is responsible for installing and configuring the JBoss Application
+# Server. Application deployments can then be managed using `wildfly::deploy`.
 #
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
-#
-# === Examples
-#
-#  class { 'wildfly':
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
-#  }
-#
-# === Authors
-#
-# Author Name <author@domain.com>
-#
-# === Copyright
-#
-# Copyright 2015 Your name here, unless otherwise noted.
-#
-class wildfly {
+class wildfly (
+    $wildfly_user     = $wildfly::params::wildfly_user,
+    $wildfly_group    = $wildfly::params::wildfly_group,
+    $wildfly_dist     = $wildfly::params::wildfly_dist,
+    $wildfly_home     = $wildfly::params::wildfly_home,
+    $staging_dir    = $wildfly::params::staging_dir,
+    $standalone_tpl = $wildfly::params::standalone_tpl
+) inherits wildfly::params {
+    # Ensure we're on a supported OS
+    case $::operatingsystem {
+        redhat, centos: { $supported = true }
+        ubuntu:         { $supported = true }
+        default:        { $supported = false }
+    }
 
+    if ($supported != true) {
+        fail("Sorry, ${::operatingsystem} is not currently supported.")
+    }
 
+    # Check to see that a working Java install exists and is available in $PATH
+    # Note that this module doesn't manage Java installations. If you need to
+    # manage Java, try <https://github.com/puppetlabs/puppetlabs-java>
+    exec { 'check-java':
+      path    => $::path,
+      command => 'java -version',
+      unless  => 'java -version'
+    }
+
+    # Proceed with installation and config
+    include wildfly::install, wildfly::config, wildfly::service
 }
